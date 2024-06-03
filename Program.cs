@@ -10,7 +10,12 @@ var connectionString = configuration.GetConnectionString("MyConnection")
     ?? "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.123.123.123)(PORT=1521))(CONNECT_DATA=(UR=A)(SERVICE_NAME=myServiceName)));User Id=myId;Password=myPassword";
 
 var dbContextOptionsBuilder = new DbContextOptionsBuilder<MyDbContext>();
-dbContextOptionsBuilder.UseOracle(connectionString);
+dbContextOptionsBuilder.UseOracle(connectionString, options =>
+{
+
+    //IMPORTANT UPDATE: 6/3/2024 - Problem can be resolved by adding this line:
+    //options.UseOracleSQLCompatibility(OracleSQLCompatibility.DatabaseVersion19);
+});
 var dbContext = new MyDbContext(dbContextOptionsBuilder.Options);
 
 var onlyWithDetails = true;
